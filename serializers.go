@@ -40,34 +40,6 @@ type PodInfo struct {
 	Pod_Name	string	`json:"pod_name"`
 }
 
-//func GetPodIP(np string, name string) (error, string) {
-//	config, err := rest.InClusterConfig()
-//	if err != nil {
-//		panic(err.Error())
-//	}
-//
-//	// Creates the dynamic interface.
-//	clientset, err := kubernetes.NewForConfig(config)
-//	if err != nil {
-//		panic(err.Error())
-//	}
-//
-//	//podsListWatcher := cache1.NewListWatchFromClient(clientset.CoreV1().RESTClient(),"pod",np,fields.Everything())
-//	//queue := workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
-//	pods, err := clientset.CoreV1().Pods(np).Get(name,metav1.GetOptions{})
-//
-//	if err != nil {
-//		_ = pods
-//		//log.Printf("ServiceMonitor %s is exists\n", sm.GetName())
-//		return err,""
-//	}
-//
-//	podIP := pods.Status.PodIP
-//
-//	return nil,podIP
-//
-//}
-
 func GetPodIP(np string, name string,k8swatch string) (error, string) {
 	res, err := http.Post(k8swatch,"",bytes.NewBuffer([]byte(name)))
 	if err != nil {
@@ -157,7 +129,7 @@ func Serialize(s Serializer, req *prompb.WriteRequest,k8swatch string, promeURL 
 					"tags":    labels,
 					"counterType": "GAUGE",
 					"application": "docker",
-					"setp": 30,
+					"step": 30,
 				}
 
 				data, err := s.Marshal(m)
@@ -209,7 +181,7 @@ func Serialize(s Serializer, req *prompb.WriteRequest,k8swatch string, promeURL 
 					"tags":    labels,
 					"counterType": "GAUGE",
 					"application": "docker",
-					"setp": 30,
+					"step": 30,
 				}
 
 				data, err := s.Marshal(m)
@@ -253,7 +225,7 @@ func Serialize(s Serializer, req *prompb.WriteRequest,k8swatch string, promeURL 
 					"tags":    labels,
 					"counterType": "GAUGE",
 					"application": "docker",
-					"setp": 30,
+					"step": 30,
 				}
 
 				data, err := s.Marshal(m)
@@ -295,7 +267,7 @@ func Serialize(s Serializer, req *prompb.WriteRequest,k8swatch string, promeURL 
 					"tags":    labels,
 					"counterType": "GAUGE",
 					"application": "docker",
-					"setp": 30,
+					"step": 30,
 				}
 
 				data, err := s.Marshal(m)
