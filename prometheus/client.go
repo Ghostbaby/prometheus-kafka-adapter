@@ -60,10 +60,23 @@ func (c *Client) Query(query string) (*Qreponse, error) {
 	}
 
 	u = c.Server.ResolveReference(u)
-	r, err := http.Get(u.String())
+	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Close = true
+
+	// send JSON to firebase
+	r, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	//r, err := http.Get(u.String())
+	//if err != nil {
+	//	return nil, err
+	//}
 	defer r.Body.Close()
 	b, err := ioutil.ReadAll(r.Body)
 
@@ -104,6 +117,7 @@ func GetPromContainerCpuUsage(pod_name string,prom_url string,sample int64) (tim
 	if err != nil {
 		onError(err)
 	}
+
 	resp,err := client.Query(query_str)
 	if err != nil{
 		onError(err)
